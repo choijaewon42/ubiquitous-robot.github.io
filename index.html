@@ -1,15 +1,217 @@
 <!DOCTYPE html>
+<html>
 <head>
-  <title>
-  </title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" 
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" 
+    crossorigin="anonymous"></script>
     <script>
-        
+        $(document).ready(function(){
+
+const types = new Set();
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+$(".publication").each((index, element) => {
+    //topics.add($(element).attr("paper-topic"));
+    let text = $(element).attr("paper-type");
+    types.add(text);
+    $(element).addClass(text);
+
+});
+
+types.forEach(
+    element => {
+        $("#paper-types").append("<li class='page-item'><a class='page-link' target-field='"+element+"' href='#'>"+capitalizeFirstLetter(element)+"</a></li>");
+    }
+);
+
+const filterPublications = function () {
+    const type = $('#paper-types>li.active>a').attr('target-field');
+    const topic = $('#paper-topics>li.active>a').attr('target-field');
+
+    selector = '';
+    if (topic != undefined)
+        selector += '.' + topic.toLowerCase();
+
+    if (type != undefined)
+        selector += '.' + type.toLowerCase();
+
+    const publications = $('td.publication');
+
+    if (topic != undefined || type != undefined) {
+        publications.filter(selector).show();
+        publications.not(selector).hide();
+    }else{
+        publications.each((index, element) => $(element).show());
+    }
+};
+
+$("#paper-types>li>a").click(function(){
+    $("#paper-types>li.active").removeClass('active');
+    $(this).parent().addClass('active');
+    filterPublications();
+});
+
+$("[target-menu=menu_publication]").click(()=>{
+    $('td.publication').each((index, element) => $(element).show());
+    $("#paper-types>li.active").removeClass('active');
+    $("#paper-types>li:first-child").addClass('active');
+});
+
+
+});
     </script>
+    <script>
+    $(document).ready(function() {
+
+        // active recently opened menu when refresh
+        var $menu_id = window.location.hash.substring(1)
+        if ($menu_id == "") {
+            $menu_id = "menu_" + "home";
+        }
+        else {
+            $menu_id = "menu_" + $menu_id;
+        }
+        $(".nav-link").each(function() {
+            $(this).removeClass("active");
+            if ($(this).attr("target-menu") == $menu_id) {
+                $(this).addClass("active");
+            }
+            
+            $('.navbar-collapse').collapse('hide');
+    
+            $(".menu_template").each(function() {
+                if ($(this).attr("id") == $menu_id) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+    
+        });
+        
+        $('.navbar-collapse').collapse('hide');
+    
+        $(".nav-link").click(function() {
+            $(".nav-link").removeClass("active");
+            $(this).addClass("active");
+    
+            $('.navbar-collapse').collapse('hide');
+    
+            menu_id = $(this).attr("target-menu");
+            $(".menu_template").each(function() {
+                if ($(this).attr("id") == menu_id) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    
+    });
+   </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script
+	crossorigin="anonymous"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+   <style>
+       @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
+
+html {
+	height: 100%;
+}
+
+body {
+	position: relative;
+	padding-top: 100px;
+	padding-bottom: 80px;
+	font-size: 14px;
+	line-height: 1.8;
+	background-color: #ffffff;
+	min-height: 100%;
+	color: #000000;
+}
+
+a.navbar-brand {
+	/* font-family: 'Permanent Marker', cursive; */
+	font-size: 24px;
+	font-weight: 600;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+a.nav-link.active {
+	font-weight: 600;
+}
+
+p {
+	text-align: justify;
+}
+
+h5 {
+	font-weight: 600;
+}
+
+.container {
+	max-width: 1024px;
+}
+
+.activity_img {
+	background-size: cover;
+	background-position: center center;
+	height:250px;
+	border-style:solid;
+	border-color: #ffffff;
+	border-width: 3px;
+}
+
+.bg-light {
+    border-color: #ffffff;
+}
+
+.table th,
+.table td {
+	border-color: #ffffff;
+}
+.table thead th {
+	border-bottom: #ffffff;
+}
+.table td.year {
+	padding-left: 0px;
+}
+.table td.publication {
+	padding-right: 0px;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0px;
+	height: 60px;
+	width: 100%;
+	font-size: 14px;
+	padding-top: 16px;
+	padding-bottom: 16px;
+	background-color:#fcfcfc;
+	border-top: 1px solid #e0e0e0;
+}
+       </style>
+  
 </head>
 <body>
-  <div class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+	<div class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
 		<div class="container">
-			<a class="navbar-brand" href="">Jaewon Choi</a>
+			<a class="navbar-brand" href="">최재원</a>
 			<button aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"
 				class="navbar-toggler" data-target="#navbarResponsive"
 				data-toggle="collapse" type="button">
@@ -18,11 +220,11 @@
 			<div class="navbar-collapse collapse" id="navbarResponsive">
 				<ul class="nav navbar-nav ml-auto">
 					<li class="nav-item"><a class="nav-link active" href="#home"
-						target-menu="menu_home">HOME</a></li>
+						target-menu="menu_home">홈</a></li>
 					<!-- <li class="nav-item"><a class="nav-link" href="#aboutme"
-						target-menu="menu_aboutme">MY HOBBY</a></li>-->
+						target-menu="menu_aboutme">ABOUT ME</a></li>-->
 					<li class="nav-item"><a class="nav-link" href="#publication"
-						target-menu="menu_publication">MY FAMILY</a></li>
+						target-menu="menu_publication">앞으로의 계획</a></li>
 					<!-- <li class="nav-item"><a class="nav-link" href="#cv"
 						target-menu="menu_cv">CURRICULUM VITAE</a></li> -->
 				</ul>
@@ -31,5 +233,39 @@
 		<!-- End of container -->
 	</div>
 	<!-- End of navbar -->
+
+
+	<div class="container">
+
+		<div class="bs-docs-section">
+			<div class="menu_template" id="menu_home">
+				<div class="row">
+					
+					<div class="col-md-8">
+
+						<h5>자기소개</h5>
+						<p>
+							현재 2학년으로 강원대학교 재학중이며 컴퓨터정보통신학전공.
+
+						</p>
+
+						<br>
+						<div class="ui labels" style="margin-top:15px">
+							<a class="ui label" href="mailto:chjwo123@daum.net" target="_blank"></i>chjwo123@daum.net</a> |
+						</div>
+
+						<blockquote class="blockquote text-right">
+							<p class="mb-0"></p>
+							<footer class="blockquote-footer">updated 28 May, 2022</footer>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+			<!-- End of menu_home -->
+		</div>
+		<!-- End of bs-docs-section -->
+
+		
+	
 </body>
 </html>
